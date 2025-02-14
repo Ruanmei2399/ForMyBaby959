@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>送给特别的你</title>
+    <style>
+        body {
+            background-color: #ffd1dc;
+            text-align: center;
+            font-family: "Arial", sans-serif;
+            overflow: hidden;
+        }
+        h1 {
+            color: #ff4d6d;
+            margin-top: 20px;
+        }
+        p {
+            color: #ff3366;
+            font-size: 18px;
+        }
+        #hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        #message {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: #d63384;
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        img {
+            width: 200px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="hearts"></canvas>
+    <h1>送给特别的你 ❤️</h1>
+    <img src="image.png" alt="乌萨奇" />
+    <p>虽然人不能到，但是幸福和甜总是要到的</p>
+    <button onclick="showMessage()">点击看看</button>
+    <p id="message">情人节快乐！希望你每天都开心！🐰💕</p>
+    <audio id="bg-music" src="losangeles.mp3" loop></audio>
+    
+    <script>
+        function showMessage() {
+            document.getElementById('message').style.display = 'block';
+            document.getElementById('bg-music').play();
+        }
+
+        // Create floating hearts
+        const canvas = document.getElementById("hearts");
+        const ctx = canvas.getContext("2d");
+        let hearts = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        function createHeart() {
+            return {
+                x: Math.random() * canvas.width,
+                y: canvas.height + Math.random() * 50,
+                size: Math.random() * 10 + 5,
+                speed: Math.random() * 2 + 1,
+                opacity: Math.random() * 0.5 + 0.5
+            };
+        }
+
+        function drawHearts() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 99, 132, 0.7)";
+            for (let i = 0; i < hearts.length; i++) {
+                let heart = hearts[i];
+                ctx.globalAlpha = heart.opacity;
+                ctx.beginPath();
+                ctx.arc(heart.x, heart.y, heart.size, 0, Math.PI * 2);
+                ctx.fill();
+                heart.y -= heart.speed;
+                if (heart.y < -10) {
+                    hearts[i] = createHeart();
+                }
+            }
+            requestAnimationFrame(drawHearts);
+        }
+
+        for (let i = 0; i < 50; i++) {
+            hearts.push(createHeart());
+        }
+
+        drawHearts();
+    </script>
+</body>
+</html>
